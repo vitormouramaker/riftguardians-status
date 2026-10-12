@@ -1,0 +1,75 @@
+# Rift Guardians — monitor externo do servidor (DI.MONITOR).
+#
+# COPIAR para o repositório público riftguardians-status como:
+#     .github/workflows/monitor.yml        (este arquivo)
+#     monitor/monitor.py                   (Tools/Monitor/monitor/monitor.py)
+#     monitor/config.json                  (Tools/Monitor/monitor/config.json)
+# Passo a passo, limites do agendamento gratuito e o que fazer se ele parar: Tools/Monitor/LEIAME.md.
+#
+# Não usa segredo nenhum: só o GITHUB_TOKEN que o próprio fluxo recebe.
+# Opcional: segredo DISCORD_WEBHOOK (endereço de um webhook de canal privado) para avisar também no Discord.
+name: monitor
+
+on:
+  schedule:
+    # A cada 10 min, fora do minuto 0 (a virada da hora é o pior momento do agendamento gratuito).
+    # O horário é uma intenção: o GitHub costuma atrasar de 3 a 15 min e, sob carga, pode pular execuções.
+    - cron: "7-59/10 * * * *"
+    # Resumo semanal (segunda, 06:23 UTC): um commit por semana no histórico. É também o que mantém o
+    # repositório "com atividade" — sem atividade por 60 dias o GitHub desliga fluxos agendados.
+    - cron: "23 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      resumo:
+        description: "Gravar agora o resumo semanal no histórico"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Uma execução por vez; se atrasar, a seguinte espera em vez de abrir duas issues.
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+
+jobs:
+  conferir:
+    if: github.event.schedule != '23 6 * * 1' && inputs.resumo != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: monitor
+      - name: Autoteste do monitor (sem rede)
+        run: python3 monitor/monitor.py --self-test
+      - name: Conferir servidor, site, certificado e arquivo de estado
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python3 monitor/monitor.py
+
+  resumo:
+    if: github.event.schedule == '23 6 * * 1' || inputs.resumo == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resumo da semana
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 monitor/monitor.py --resumo monitor/historico.json
+      - name: Gravar o histórico (um commit por semana)
+        run: |
+          git config user.name "rg-monitor"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add monitor/historico.json
+          git diff --cached --quiet || git commit -m "monitor: resumo da semana"
+          git push

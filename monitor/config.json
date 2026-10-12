@@ -1,0 +1,19 @@
+{
+  "api": "https://api.riftguardians.tech",
+  "site": "https://riftguardians.tech/",
+  "estado_urls": [
+    "https://vitormouramaker.github.io/riftguardians-status/estado.json",
+    "https://raw.githubusercontent.com/vitormouramaker/riftguardians-status/main/estado.json"
+  ],
+  "estado_modulus": "u77ePMcDrfMjofhgEZakfve1riyofxOJfWQW1XZHBnnMxfRRnkgnALyoGwk6+Os0bzSLTJcKTU22yv37icbcPXlWFJXatDIFeM3HzKdkm7PnxMSr/d6IG38mTMuq7TUAVnxJLQq0/yX1r+lF47mc9UTkJLgfIQtSdemzuylhvtJ844cNgMSOafcKN/0oAnX0eBKwmtHB+4lEQUfoCaJSweK/Zng7Fm5YGLk/o+qAGTuybqUO+S6XJ8HFnsVXltqkDpxj5NOUu2ceWCDfL1F9xWWzIP86bsJztmw+0lskStZUd9Cjntq5Qk2Y+nxFoohdGCfrfvQ9jYGlkbTNyCBh2Q==",
+  "estado_exponent": "AQAB",
+  "autoteste_assinatura": "oth/jhW9b6g99osYEyM97cm4eYnLH/U/CtyDKar9wWmue5OmlzOHo3aVHwDePJ4UwSuvbtk5yOXRJjBKMqR5FjHvca4rOKXbiZLWadG6krIkPJ+juC+BA5VV+BegoWWkssNm+8UhJtD2V1qRGqj6/ONIB8DIFqtOo/wqgz0pRckPID7J/Za09CX1V7jguKMAzrOr4ms7mJVqKkbHlh4ISS+KHTc95DoXcH6ZKZuD+MhYvgZ3pZj/9r47kTzslo+8nduhlZ542A/HZ6a5XMUkRW37teX68pF32z5mlFGTZiJS1wQIHTTi5vFREtFl11nxvw9XYFsEQUjGLkZrPSspfg==",
+  "sim_version": null,
+  "relay_esperado": true,
+  "cert_min_dias": 14,
+  "estado_max_dias": 200,
+  "manutencao_folga_min": 60,
+  "manutencao_sem_prazo_h": 6,
+  "tentativas": 3,
+  "intervalo_s": 45
+}
