@@ -30,5 +30,13 @@
   "minutos_com_problema": 0,
   "abertos": 0,
   "disponibilidade_pct": 100.0
+ },
+ {
+  "semana": "2026-S47",
+  "ate": "2026-11-16",
+  "incidentes": 1,
+  "minutos_com_problema": 9576,
+  "abertos": 1,
+  "disponibilidade_pct": 5.0
  }
 ]
